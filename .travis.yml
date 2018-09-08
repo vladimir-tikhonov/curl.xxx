@@ -1,0 +1,12 @@
+services:
+  - docker
+
+install:
+  - docker-compose -f ci/docker-compose.development.yml build
+
+script:
+  - docker-compose -f ci/docker-compose.development.yml run frontend npm run lint
+  - docker-compose -f ci/docker-compose.development.yml run frontend npm run build
+
+  - docker-compose -f ci/docker-compose.development.yml run backend npm run lint
+  - docker-compose -f ci/docker-compose.development.yml run backend npm run build

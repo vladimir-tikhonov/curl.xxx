@@ -1,0 +1,34 @@
+{
+  "name": "backend.curl.xxx",
+  "version": "0.1.0",
+  "description": "Backend for curl.xxx website",
+  "main": "src/index.ts",
+  "author": "Vladimir Tikhonov",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vladimir-tikhonov/curl.xxx"
+  },
+  "license": "ISC",
+  "scripts": {
+    "start": "npm run clean:dist && tsc-watch --onSuccess \"node --inspect dist\"",
+    "build": "npm run clean:dist && tsc",
+    "lint": "tslint --project tsconfig.json \"**/*.ts\"",
+    "clean:dist": "rimraf dist/*"
+  },
+  "_moduleAliases": {
+    "src": "./dist"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "rimraf": "^2.6.2",
+    "tsc-watch": "^1.0.27",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "envalid": "^4.1.4",
+    "express": "^4.16.3",
+    "module-alias": "^2.1.0"
+  }
+}

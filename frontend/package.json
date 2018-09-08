@@ -1,0 +1,40 @@
+{
+  "name": "frontend.curl.xxx",
+  "version": "0.1.0",
+  "description": "Frontend for curl.xxx website",
+  "main": "src/index.tsx",
+  "author": "Vladimir Tikhonov",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vladimir-tikhonov/curl.xxx"
+  },
+  "license": "ISC",
+  "scripts": {
+    "start": "NODE_ENV=development webpack-serve",
+    "build": "NODE_ENV=production webpack",
+    "lint": "npm run lint:eslint && npm run lint:tslint",
+    "lint:eslint": "eslint \"**/*.js\"",
+    "lint:tslint": "tslint --project tsconfig.json \"**/*.{ts,tsx}\""
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.13",
+    "@types/react-dom": "^16.0.7",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.5.0",
+    "eslint-plugin-babel": "^5.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "ts-loader": "^5.0.0",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-merge": "^4.1.4",
+    "webpack-serve": "^2.0.2"
+  },
+  "dependencies": {
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0"
+  }
+}
