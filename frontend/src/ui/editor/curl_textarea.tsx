@@ -39,11 +39,7 @@ class CurlTextarea extends React.PureComponent<IStyledComponentProps<typeof styl
 
     private renderPs1() {
         return (
-            <InputAdornment
-                disableTypography
-                position="start"
-                classes={{ root: this.props.classes.ps1 }}
-            >
+            <InputAdornment disableTypography position="start" classes={{ root: this.props.classes.ps1 }}>
                 > curl
             </InputAdornment>
         );

@@ -9,25 +9,26 @@ import ExecuteButton from './execute_button';
 import RequestMethodSelect from './request_method_select';
 import UrlInput from './url_input';
 
-const styles = (theme: Theme) => createStyles({
-    editorRoot: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-    },
-    toolbar: theme.mixins.toolbar,
-    gridRow: {
-        minHeight: 'fit-content',
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingTop: 8,
-        marginBottom: 16,
-    },
-    subheader: {
-        marginTop: 16,
-        marginLeft: 16,
-    },
-});
+const styles = (theme: Theme) =>
+    createStyles({
+        editorRoot: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+        },
+        toolbar: theme.mixins.toolbar,
+        gridRow: {
+            minHeight: 'fit-content',
+            paddingLeft: 16,
+            paddingRight: 16,
+            paddingTop: 8,
+            marginBottom: 16,
+        },
+        subheader: {
+            marginTop: 16,
+            marginLeft: 16,
+        },
+    });
 
 class Editor extends React.PureComponent<IStyledComponentProps<ReturnType<typeof styles>>> {
     public render() {

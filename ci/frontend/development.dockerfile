@@ -11,9 +11,11 @@ COPY frontend/webpack.config.js /opt/app/frontend/webpack.config.js
 COPY frontend/tsconfig.json /opt/app/frontend/tsconfig.json
 COPY frontend/tslint.json /opt/app/frontend/tslint.json
 COPY frontend/.eslintrc /opt/app/frontend/.eslintrc
+COPY frontend/.prettierrc.js /opt/app/frontend/.prettierrc.js
 
 COPY shared/config/tsconfig.base.json /opt/app/shared/config/tsconfig.base.json
 COPY shared/config/tslint.json /opt/app/shared/config/tslint.json
 COPY shared/config/.eslintrc /opt/app/shared/config/.eslintrc
+COPY shared/config/.prettierrc.js /opt/app/shared/config/.prettierrc.js
 
 CMD ["npm", "start"]

@@ -31,7 +31,11 @@ class RequestMethodSelect extends React.PureComponent<IStyledComponentProps<type
     }
 
     private renderMethodOption(method: RequestMethod) {
-        return <option key={method} value={method}>{method}</option>;
+        return (
+            <option key={method} value={method}>
+                {method}
+            </option>
+        );
     }
 }
 

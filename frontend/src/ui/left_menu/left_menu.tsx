@@ -10,22 +10,23 @@ import * as React from 'react';
 import { IStyledComponentProps } from 'src/ui';
 import { LEFT_MENU_WIDTH } from 'src/ui/constants';
 
-const styles = (theme: Theme) => createStyles({
-    leftMenu: {
-        width: LEFT_MENU_WIDTH,
-        height: '100%',
-    },
-    toolbar: theme.mixins.toolbar,
-    leftMenuHeader: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    leftMenuPaper: {
-        position: 'relative',
-        width: LEFT_MENU_WIDTH,
-    },
-});
+const styles = (theme: Theme) =>
+    createStyles({
+        leftMenu: {
+            width: LEFT_MENU_WIDTH,
+            height: '100%',
+        },
+        toolbar: theme.mixins.toolbar,
+        leftMenuHeader: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        leftMenuPaper: {
+            position: 'relative',
+            width: LEFT_MENU_WIDTH,
+        },
+    });
 
 class LeftMenu extends React.PureComponent<IStyledComponentProps<ReturnType<typeof styles>>> {
     public render() {
@@ -39,9 +40,7 @@ class LeftMenu extends React.PureComponent<IStyledComponentProps<ReturnType<type
                 variant="permanent"
             >
                 <div className={classnames(classes.toolbar, classes.leftMenuHeader)}>
-                    <Typography variant="title">
-                        Recent queries
-                    </Typography>
+                    <Typography variant="title">Recent queries</Typography>
                 </div>
 
                 <Divider />
