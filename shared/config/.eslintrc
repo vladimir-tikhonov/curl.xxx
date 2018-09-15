@@ -1,21 +1,10 @@
 {
     "env": {
-        "browser": true,
         "es6": true,
         "commonjs": true,
         "node": true
     },
     "extends": "eslint:recommended",
-    "parser": "babel-eslint",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "sourceType": "module"
-    },
-    "plugins": [
-        "babel"
-    ],
     "rules": {
         "accessor-pairs": "error",
         "array-bracket-spacing": [
@@ -293,7 +282,6 @@
         "wrap-iife": "error",
         "wrap-regex": "error",
         "yield-star-spacing": "error",
-        "yoda": "error",
-        "babel/no-invalid-this": "error"
+        "yoda": "error"
     }
 }

@@ -1,10 +1,14 @@
+'use strict';
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const merge = require('webpack-merge');
 
-const SRC_PATH = path.resolve(__dirname, 'src');
-const ASSETS_PATH = path.resolve(__dirname, 'assets');
-const DIST_PATH = path.resolve(__dirname, 'dist');
+const ROOT_PATH = __dirname;
+const SRC_PATH = path.resolve(ROOT_PATH, 'src');
+const ASSETS_PATH = path.resolve(ROOT_PATH, 'assets');
+const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 
 const isProductionBuild = process.env.NODE_ENV === 'production';
 
@@ -24,7 +28,7 @@ const serveOptions = () => ({
 });
 
 const sourceMaps = () => ({
-    devtool: isProductionBuild ? false : 'eval-source-map',
+    devtool: isProductionBuild ? false : 'source-map',
 });
 
 const entryPoint = () => ({
@@ -41,7 +45,7 @@ const output = () => ({
 
 const resolveOptions = () => ({
     resolve: {
-        modules: [SRC_PATH, 'node_modules'],
+        modules: [ROOT_PATH, 'node_modules'],
         extensions: ['.js', '.ts', '.tsx', '.scss'],
     },
 });
@@ -66,8 +70,16 @@ const htmlGenerator = () => ({
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Online curl tool',
-            template: path.resolve(ASSETS_PATH, 'html', 'index.template.html'),
+            template: path.resolve(ASSETS_PATH, 'index.template.html'),
         }),
+    ],
+});
+
+const assetsCopy = () => ({
+    plugins: [
+        new CopyWebpackPlugin([
+            { from: path.join(ASSETS_PATH, 'favicon.ico'), to: DIST_PATH },
+        ]),
     ],
 });
 
@@ -80,4 +92,5 @@ module.exports = merge(
     resolveOptions(),
     typescriptLoader(),
     htmlGenerator(),
+    assetsCopy()
 );
