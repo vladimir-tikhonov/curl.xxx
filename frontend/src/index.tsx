@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 
+import { Root } from 'src/ui';
+
 const appContainer = document.getElementById('app_container')!;
-const Root = () => <div>Hello world!</div>;
 
 ReactDom.render(
     <React.StrictMode>
