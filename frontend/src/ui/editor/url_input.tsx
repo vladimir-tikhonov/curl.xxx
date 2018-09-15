@@ -22,11 +22,7 @@ class UrlInput extends React.PureComponent<IStyledComponentProps<typeof styles>>
         return (
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="url-input">URL</InputLabel>
-                <Input
-                    id="url-input"
-                    className={classes.urlInput}
-                    placeholder="https://example.com"
-                />
+                <Input id="url-input" className={classes.urlInput} placeholder="https://example.com" />
             </FormControl>
         );
     }
