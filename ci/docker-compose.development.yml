@@ -17,6 +17,10 @@ services:
         target: /opt/app/frontend/src
         read_only: true
       - type: bind
+        source: ../frontend/typings
+        target: /opt/app/frontend/typings
+        read_only: true
+      - type: bind
         source: ../frontend/assets
         target: /opt/app/frontend/assets
         read_only: true

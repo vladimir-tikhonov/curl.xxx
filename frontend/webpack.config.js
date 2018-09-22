@@ -83,6 +83,13 @@ const assetsCopy = () => ({
     ],
 });
 
+const externals = () => ({
+    externals: [
+        // unused import inside argparse package
+        'fs',
+    ],
+});
+
 module.exports = merge(
     webpackMode(),
     serveOptions(),
@@ -92,5 +99,6 @@ module.exports = merge(
     resolveOptions(),
     typescriptLoader(),
     htmlGenerator(),
-    assetsCopy()
+    assetsCopy(),
+    externals()
 );

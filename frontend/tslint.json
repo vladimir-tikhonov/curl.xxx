@@ -13,7 +13,7 @@
         "jsx-key": true,
         "jsx-no-bind": true,
         "jsx-no-lambda": true,
-        "jsx-no-multiline-js": true,
+        "jsx-no-multiline-js": false,
         "jsx-no-string-ref": true,
         "jsx-self-close": true,
         "jsx-space-before-trailing-slash": true,

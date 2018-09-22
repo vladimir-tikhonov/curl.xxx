@@ -2,7 +2,11 @@ import Button from '@material-ui/core/Button';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
-import { IStyledComponentProps } from 'src/ui';
+import { StyledComponentProps } from 'src/ui';
+
+interface ExecuteButtonProps extends StyledComponentProps<typeof styles> {
+    disabled: boolean;
+}
 
 const styles = createStyles({
     button: {
@@ -10,12 +14,12 @@ const styles = createStyles({
     },
 });
 
-export class ExecuteButton extends React.PureComponent<IStyledComponentProps<typeof styles>> {
+export class ExecuteButton extends React.PureComponent<ExecuteButtonProps> {
     public render() {
-        const { classes } = this.props;
+        const { classes, disabled } = this.props;
 
         return (
-            <Button className={classes.button} variant="contained" color="primary">
+            <Button className={classes.button} disabled={disabled} variant="contained" color="primary">
                 Execute
             </Button>
         );

@@ -5,7 +5,7 @@ import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
 import { allRequestMethods, RequestMethod } from 'src/request_methods';
-import { IStyledComponentProps } from 'src/ui';
+import { StyledComponentProps } from 'src/ui';
 
 const styles = createStyles({
     formControl: {
@@ -16,7 +16,7 @@ const styles = createStyles({
     },
 });
 
-class RequestMethodSelect extends React.PureComponent<IStyledComponentProps<typeof styles>> {
+class RequestMethodSelect extends React.PureComponent<StyledComponentProps<typeof styles>> {
     public render() {
         const { classes } = this.props;
 

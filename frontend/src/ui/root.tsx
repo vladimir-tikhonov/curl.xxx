@@ -2,7 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
-import { IStyledComponentProps } from 'src/ui';
+import { StyledComponentProps } from 'src/ui';
 import { Editor } from './editor';
 import { Header } from './header';
 import { LeftMenu } from './left_menu';
@@ -14,7 +14,7 @@ const styles = createStyles({
     },
 });
 
-class Root extends React.PureComponent<IStyledComponentProps<typeof styles>> {
+class Root extends React.PureComponent<StyledComponentProps<typeof styles>> {
     public render() {
         const { classes } = this.props;
 
