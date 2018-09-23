@@ -4,7 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
-import { StyledComponentProps } from 'src/ui';
+import { ExtractClassesPropType } from 'src/ui';
 
 const styles = createStyles({
     formControl: {
@@ -15,7 +15,7 @@ const styles = createStyles({
     },
 });
 
-class UrlInput extends React.PureComponent<StyledComponentProps<typeof styles>> {
+class UrlInput extends React.PureComponent<ExtractClassesPropType<typeof styles>> {
     public render() {
         const { classes } = this.props;
 

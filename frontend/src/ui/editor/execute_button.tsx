@@ -2,9 +2,9 @@ import Button from '@material-ui/core/Button';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
-import { StyledComponentProps } from 'src/ui';
+import { ExtractClassesPropType } from 'src/ui';
 
-interface ExecuteButtonProps extends StyledComponentProps<typeof styles> {
+interface ExecuteButtonProps extends ExtractClassesPropType<typeof styles> {
     disabled: boolean;
 }
 

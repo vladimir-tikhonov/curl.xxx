@@ -6,9 +6,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
-import { StyledComponentProps } from 'src/ui';
+import { ExtractClassesPropType } from 'src/ui';
 
-interface CurlTextareaProps extends StyledComponentProps<typeof styles> {
+interface CurlTextareaProps extends ExtractClassesPropType<typeof styles> {
     curlCommandString: string;
     parseError: string | null;
     parseWarnings: string[];

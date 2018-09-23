@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import * as classnames from 'classnames';
 import * as React from 'react';
 
-import { StyledComponentProps } from 'src/ui';
+import { ExtractClassesPropType } from 'src/ui';
 import { LEFT_MENU_WIDTH } from 'src/ui/constants';
 
 const styles = (theme: Theme) =>
@@ -28,7 +28,7 @@ const styles = (theme: Theme) =>
         },
     });
 
-class LeftMenu extends React.PureComponent<StyledComponentProps<ReturnType<typeof styles>>> {
+class LeftMenu extends React.PureComponent<ExtractClassesPropType<typeof styles>> {
     public render() {
         const { classes } = this.props;
 

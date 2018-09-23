@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 
 import { buildCommandFromString, sanitizeCommand } from 'src/curl';
-import { StyledComponentProps } from 'src/ui';
+import { ExtractClassesPropType } from 'src/ui';
 import CurlTextarea from './curl_textarea';
 import ExecuteButton from './execute_button';
 import RequestMethodSelect from './request_method_select';
@@ -16,7 +16,7 @@ interface EditorState {
     parseWarnings: string[];
 }
 
-interface EditorProps extends StyledComponentProps<ReturnType<typeof styles>> {}
+interface EditorProps extends ExtractClassesPropType<typeof styles> {}
 
 const styles = (theme: Theme) =>
     createStyles({
