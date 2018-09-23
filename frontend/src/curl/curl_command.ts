@@ -3,10 +3,10 @@ import uniq from 'lodash/uniq';
 import { Argument } from './arguments';
 import parse, { ParseResults } from './parser';
 
-export interface ArgumentPayload {
+export interface ArgumentPayload<T extends string = string> {
     argument: Argument;
     invokedWith: string;
-    payload: any[];
+    payload: T[];
 }
 
 export type CurlCommand = ArgumentPayload[];

@@ -1,6 +1,6 @@
 import ArgumentName from './argument_name';
 
-type Argument<T = any> = Readonly<{
+type Argument<T extends string = string> = Readonly<{
     isSupported: boolean;
     name: ArgumentName;
     flags: string[];
