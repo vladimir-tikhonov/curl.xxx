@@ -3,11 +3,20 @@ import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 
-import { IStyledComponentProps } from 'src/ui';
+import { buildCommandFromString, sanitizeCommand } from 'src/curl';
+import { StyledComponentProps } from 'src/ui';
 import CurlTextarea from './curl_textarea';
 import ExecuteButton from './execute_button';
 import RequestMethodSelect from './request_method_select';
 import UrlInput from './url_input';
+
+interface EditorState {
+    curlCommandString: string;
+    parseError: string | null;
+    parseWarnings: string[];
+}
+
+interface EditorProps extends StyledComponentProps<ReturnType<typeof styles>> {}
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -30,7 +39,18 @@ const styles = (theme: Theme) =>
         },
     });
 
-class Editor extends React.PureComponent<IStyledComponentProps<ReturnType<typeof styles>>> {
+class Editor extends React.PureComponent<EditorProps, EditorState> {
+    public constructor(props: EditorProps) {
+        super(props);
+        this.state = {
+            curlCommandString: 'https://example.com',
+            parseError: null,
+            parseWarnings: [],
+        };
+
+        this.handleCurlCommandStringChange = this.handleCurlCommandStringChange.bind(this);
+    }
+
     public render() {
         const { classes } = this.props;
 
@@ -53,17 +73,34 @@ class Editor extends React.PureComponent<IStyledComponentProps<ReturnType<typeof
 
                 <Grid container className={classes.gridRow}>
                     <Grid item xs>
-                        <CurlTextarea />
+                        <CurlTextarea
+                            curlCommandString={this.state.curlCommandString}
+                            parseError={this.state.parseError}
+                            parseWarnings={this.state.parseWarnings}
+                            onChange={this.handleCurlCommandStringChange}
+                        />
                     </Grid>
                 </Grid>
 
                 <Grid container className={classes.gridRow}>
                     <Grid item xs>
-                        <ExecuteButton />
+                        <ExecuteButton disabled={!!this.state.parseError} />
                     </Grid>
                 </Grid>
             </div>
         );
+    }
+
+    private handleCurlCommandStringChange(newCommand: string) {
+        const sanitizedCommand = sanitizeCommand(newCommand);
+        this.setState({ curlCommandString: sanitizedCommand });
+
+        const buildResult = buildCommandFromString(sanitizedCommand);
+        if (buildResult.successfull) {
+            this.setState({ parseError: null, parseWarnings: buildResult.warnings });
+        } else {
+            this.setState({ parseError: buildResult.error, parseWarnings: [] });
+        }
     }
 }
 

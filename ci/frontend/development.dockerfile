@@ -1,7 +1,7 @@
 FROM node:10-alpine
 
 WORKDIR /opt/app/frontend
-VOLUME ["/opt/app/frontend/src", "/opt/app/frontend/assets"]
+VOLUME ["/opt/app/frontend/src", "/opt/app/frontend/typings", "/opt/app/frontend/assets"]
 
 COPY frontend/package.json /opt/app/frontend/package.json
 COPY frontend/package-lock.json /opt/app/frontend/package-lock.json

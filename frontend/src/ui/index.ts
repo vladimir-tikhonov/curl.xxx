@@ -1,5 +1,5 @@
 export { default as Root } from 'src/ui/root';
 
-export interface IStyledComponentProps<T> {
+export interface StyledComponentProps<T> {
     classes: Record<keyof T, string>;
 }

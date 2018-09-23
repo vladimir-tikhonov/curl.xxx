@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 
-import { IStyledComponentProps } from 'src/ui';
+import { StyledComponentProps } from 'src/ui';
 import { LEFT_MENU_WIDTH } from 'src/ui/constants';
 
 const styles = createStyles({
@@ -18,7 +18,7 @@ const styles = createStyles({
     },
 });
 
-class Header extends React.PureComponent<IStyledComponentProps<typeof styles>> {
+class Header extends React.PureComponent<StyledComponentProps<typeof styles>> {
     public render() {
         const { classes } = this.props;
 
