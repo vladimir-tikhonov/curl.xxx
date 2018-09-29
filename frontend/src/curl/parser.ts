@@ -10,7 +10,7 @@ export type ParseResults =
 
 type ArgparseParseResults = [Record<ArgumentName, string[] | null>, string[]];
 
-const parser = new ArgumentParser({ addHelp: false, debug: true } as any); // TODO add to definitelytyped
+const parser = new ArgumentParser({ addHelp: false, debug: true });
 allArguments.forEach((argument) => {
     parser.addArgument(argument.flags, {
         nargs: argument.argsCount,
