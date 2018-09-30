@@ -3,7 +3,16 @@ import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 
-import { buildCommandFromString, sanitizeCommand } from 'src/curl';
+import {
+    applyRequestMethod,
+    ArgumentApplier,
+    buildCommandFromString,
+    CurlCommand,
+    extractMetadata,
+    RequestMethod,
+    sanitizeCommand,
+    strinfigyCurlCommand,
+} from 'src/curl';
 import { ExtractClassesPropType } from 'src/ui';
 import CurlTextarea from './curl_textarea';
 import ExecuteButton from './execute_button';
@@ -12,6 +21,9 @@ import UrlInput from './url_input';
 
 interface EditorState {
     curlCommandString: string;
+    curlCommand: CurlCommand;
+    url: string;
+    requestMethod: RequestMethod;
     parseError: string | null;
     parseWarnings: string[];
 }
@@ -39,20 +51,34 @@ const styles = (theme: Theme) =>
         },
     });
 
+const DEFAULT_CURL_COMMAND = 'https://example.com';
+
 class Editor extends React.PureComponent<EditorProps, EditorState> {
     public constructor(props: EditorProps) {
         super(props);
+
+        const buildResults = buildCommandFromString(DEFAULT_CURL_COMMAND);
+        if (!buildResults.successfull || buildResults.warnings.length !== 0) {
+            throw new Error('Default command is corrupted');
+        }
+        const { url, requestMethod } = extractMetadata(buildResults.curlCommand);
         this.state = {
-            curlCommandString: 'https://example.com',
+            curlCommandString: DEFAULT_CURL_COMMAND,
+            curlCommand: buildResults.curlCommand,
+            url,
+            requestMethod,
             parseError: null,
             parseWarnings: [],
         };
 
         this.handleCurlCommandStringChange = this.handleCurlCommandStringChange.bind(this);
+        this.handleRequestMethodChange = this.handleRequestMethodChange.bind(this);
+        this.handleArgumentApplier = this.handleArgumentApplier.bind(this);
     }
 
     public render() {
         const { classes } = this.props;
+        const { requestMethod, url } = this.state;
 
         return (
             <div className={classes.editorRoot}>
@@ -64,10 +90,10 @@ class Editor extends React.PureComponent<EditorProps, EditorState> {
 
                 <Grid container spacing={8} className={classes.gridRow}>
                     <Grid item xs>
-                        <UrlInput />
+                        <UrlInput url={url} handleArgumentApplier={this.handleArgumentApplier} />
                     </Grid>
                     <Grid item xs={2}>
-                        <RequestMethodSelect />
+                        <RequestMethodSelect requestMethod={requestMethod} onChange={this.handleRequestMethodChange} />
                     </Grid>
                 </Grid>
 
@@ -96,10 +122,40 @@ class Editor extends React.PureComponent<EditorProps, EditorState> {
         this.setState({ curlCommandString: sanitizedCommand });
 
         const buildResult = buildCommandFromString(sanitizedCommand);
-        if (buildResult.successfull) {
-            this.setState({ parseError: null, parseWarnings: buildResult.warnings });
-        } else {
+        if (!buildResult.successfull) {
             this.setState({ parseError: buildResult.error, parseWarnings: [] });
+            return;
+        }
+
+        this.applyNewCurlCommand(buildResult.curlCommand, buildResult.warnings, { doNotSetCurlString: true });
+    }
+
+    private handleRequestMethodChange(newRequestMethod: RequestMethod) {
+        const newCurlCommand = applyRequestMethod(this.state.curlCommand, newRequestMethod);
+        this.applyNewCurlCommand(newCurlCommand, []);
+    }
+
+    private handleArgumentApplier<T extends string = string>(applier: ArgumentApplier<T>, payload: T[]) {
+        const newCurlCommand = applier.applyTo(this.state.curlCommand, payload);
+        this.applyNewCurlCommand(newCurlCommand, []);
+    }
+
+    private applyNewCurlCommand(
+        curlCommand: CurlCommand,
+        parseWarnings: string[],
+        customOptions?: { doNotSetCurlString?: boolean },
+    ) {
+        const options = { doNotSetCurlString: false, ...customOptions };
+
+        const { url, requestMethod } = extractMetadata(curlCommand);
+        this.setState({ curlCommand, url, requestMethod, parseError: null, parseWarnings });
+        if (!options.doNotSetCurlString) {
+            const curlCommandString = strinfigyCurlCommand(curlCommand);
+            const buildResult = buildCommandFromString(curlCommandString);
+            if (!buildResult.successfull) {
+                this.setState({ parseError: buildResult.error });
+            }
+            this.setState({ curlCommandString });
         }
     }
 }

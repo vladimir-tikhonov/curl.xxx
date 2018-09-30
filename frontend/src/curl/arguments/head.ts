@@ -4,7 +4,7 @@ import ArgumentName from './argument_name';
 const head: Argument = {
     isSupported: true,
     name: ArgumentName.Head,
-    flags: ['-I', '--head'],
+    flags: ['--head', '-I'],
     argsCount: 0,
 };
 
