@@ -25,7 +25,7 @@ class Header extends React.PureComponent<ExtractClassesPropType<typeof styles>> 
         return (
             <AppBar className={classes.appBar} position="absolute">
                 <Toolbar>
-                    <Typography variant="title" color="inherit">
+                    <Typography variant="h6" color="inherit">
                         Online curl tool
                     </Typography>
                     {this.renderGithubLink()}

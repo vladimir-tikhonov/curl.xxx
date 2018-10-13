@@ -1,6 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import 'clipboard-polyfill/build/clipboard-polyfill';
 import * as React from 'react';
 
 import {
@@ -14,8 +15,8 @@ import {
     strinfigyCurlCommand,
 } from 'src/curl';
 import { ExtractClassesPropType } from 'src/ui';
+import Buttons from './buttons';
 import CurlTextarea from './curl_textarea';
-import ExecuteButton from './execute_button';
 import RequestMethodSelect from './request_method_select';
 import UrlInput from './url_input';
 
@@ -57,20 +58,10 @@ class Editor extends React.PureComponent<EditorProps, EditorState> {
     public constructor(props: EditorProps) {
         super(props);
 
-        const buildResults = buildCommandFromString(DEFAULT_CURL_COMMAND);
-        if (!buildResults.successfull || buildResults.warnings.length !== 0) {
-            throw new Error('Default command is corrupted');
-        }
-        const { url, requestMethod } = extractMetadata(buildResults.curlCommand);
-        this.state = {
-            curlCommandString: DEFAULT_CURL_COMMAND,
-            curlCommand: buildResults.curlCommand,
-            url,
-            requestMethod,
-            parseError: null,
-            parseWarnings: [],
-        };
+        this.applyDefaultCommand({ sync: true });
 
+        this.applyDefaultCommand = this.applyDefaultCommand.bind(this);
+        this.copyToClipboard = this.copyToClipboard.bind(this);
         this.handleCurlCommandStringChange = this.handleCurlCommandStringChange.bind(this);
         this.handleRequestMethodChange = this.handleRequestMethodChange.bind(this);
         this.handleArgumentApplier = this.handleArgumentApplier.bind(this);
@@ -84,7 +75,7 @@ class Editor extends React.PureComponent<EditorProps, EditorState> {
             <div className={classes.editorRoot}>
                 <div className={classes.toolbar} />
 
-                <Typography className={classes.subheader} variant="headline">
+                <Typography className={classes.subheader} variant="h5">
                     Request
                 </Typography>
 
@@ -110,11 +101,39 @@ class Editor extends React.PureComponent<EditorProps, EditorState> {
 
                 <Grid container className={classes.gridRow}>
                     <Grid item xs>
-                        <ExecuteButton disabled={!!this.state.parseError} />
+                        <Buttons
+                            executionIsDisabled={!!this.state.parseError}
+                            handleClearClick={this.applyDefaultCommand}
+                            handleCopyClick={this.copyToClipboard}
+                        />
                     </Grid>
                 </Grid>
             </div>
         );
+    }
+
+    private applyDefaultCommand(customOptions?: { sync?: boolean }) {
+        const options = { sync: false, ...customOptions };
+
+        const buildResults = buildCommandFromString(DEFAULT_CURL_COMMAND);
+        if (!buildResults.successfull || buildResults.warnings.length !== 0) {
+            throw new Error('Default command is corrupted');
+        }
+        const { url, requestMethod } = extractMetadata(buildResults.curlCommand);
+        const newState = {
+            curlCommandString: DEFAULT_CURL_COMMAND,
+            curlCommand: buildResults.curlCommand,
+            url,
+            requestMethod,
+            parseError: null,
+            parseWarnings: [],
+        };
+
+        options.sync ? (this.state = newState) : this.setState(newState);
+    }
+
+    private async copyToClipboard() {
+        await navigator.clipboard.writeText!(`curl ${this.state.curlCommandString}`);
     }
 
     private handleCurlCommandStringChange(newCommand: string) {

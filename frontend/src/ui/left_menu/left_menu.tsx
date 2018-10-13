@@ -40,7 +40,7 @@ class LeftMenu extends React.PureComponent<ExtractClassesPropType<typeof styles>
                 variant="permanent"
             >
                 <div className={classnames(classes.toolbar, classes.leftMenuHeader)}>
-                    <Typography variant="title">Recent queries</Typography>
+                    <Typography variant="h6">Recent queries</Typography>
                 </div>
 
                 <Divider />
