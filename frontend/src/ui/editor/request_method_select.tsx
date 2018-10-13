@@ -4,8 +4,13 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 
-import { allRequestMethods, RequestMethod } from 'src/request_methods';
+import { allRequestMethods, RequestMethod } from 'src/curl';
 import { ExtractClassesPropType } from 'src/ui';
+
+interface RequestMethodSelectProps extends ExtractClassesPropType<typeof styles> {
+    requestMethod: RequestMethod;
+    onChange(newRequestMethod: RequestMethod): void;
+}
 
 const styles = createStyles({
     formControl: {
@@ -16,14 +21,25 @@ const styles = createStyles({
     },
 });
 
-class RequestMethodSelect extends React.PureComponent<ExtractClassesPropType<typeof styles>> {
+class RequestMethodSelect extends React.PureComponent<RequestMethodSelectProps> {
+    public constructor(props: RequestMethodSelectProps) {
+        super(props);
+
+        this.handleRequestMethodChange = this.handleRequestMethodChange.bind(this);
+    }
+
     public render() {
-        const { classes } = this.props;
+        const { classes, requestMethod } = this.props;
 
         return (
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="request-method-select">Method</InputLabel>
-                <NativeSelect id="request-method-select" className={classes.select}>
+                <NativeSelect
+                    id="request-method-select"
+                    className={classes.select}
+                    value={requestMethod}
+                    onChange={this.handleRequestMethodChange}
+                >
                     {allRequestMethods.map((method) => this.renderMethodOption(method))}
                 </NativeSelect>
             </FormControl>
@@ -36,6 +52,10 @@ class RequestMethodSelect extends React.PureComponent<ExtractClassesPropType<typ
                 {method}
             </option>
         );
+    }
+
+    private handleRequestMethodChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        this.props.onChange(event.target.value as RequestMethod);
     }
 }
 

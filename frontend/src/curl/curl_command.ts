@@ -1,10 +1,10 @@
 import uniq from 'lodash/uniq';
 
-import { Argument } from './arguments';
+import { Argument, isPositional } from './arguments';
 import parse, { ParseResults } from './parser';
 
 export interface ArgumentPayload<T extends string = string> {
-    argument: Argument;
+    argument: Argument<T>;
     invokedWith: string;
     payload: T[];
 }
@@ -31,6 +31,16 @@ export function buildCommandFromString(command: string): BuildResults {
             ...buildUnsupportedAgrumentsWarnings(unsupportedArguments),
         ],
     };
+}
+
+export function strinfigyCurlCommand(curlCommand: CurlCommand) {
+    return curlCommand
+        .map((argumentPayload) => {
+            return isPositional(argumentPayload.argument)
+                ? argumentPayload.payload.join(' ')
+                : `${argumentPayload.invokedWith} ${argumentPayload.payload.join(' ')}`;
+        })
+        .join(' ');
 }
 
 export function sanitizeCommand(command: string) {

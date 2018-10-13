@@ -72,7 +72,8 @@
         true,
         {
           "multiline": "always",
-          "singleline": "newer"
+          "singleline": "newer",
+          "esSpecCompliant": true
         }
       ],
       "triple-equals": true,

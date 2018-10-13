@@ -1,4 +1,5 @@
 import { ArgumentParser } from 'argparse';
+import sortBy from 'lodash/sortBy';
 import stringArgv from 'string-argv';
 
 import { allArguments, Argument, ArgumentName, findArgumentByName, isPositional } from './arguments';
@@ -37,7 +38,7 @@ export default function parse(command: string): ParseResults {
                     payload: knownArguments[argumentName]!,
                 };
             });
-        return { successfull: true, payloads, unknownArguments, argv };
+        return { successfull: true, payloads: sortPayloads(payloads, argv), unknownArguments, argv };
     } catch (e) {
         return { successfull: false, error: e.message };
     }
@@ -48,5 +49,23 @@ function findInvokation(argument: Argument, argv: string[]) {
         return argument.flags[0];
     }
 
-    return argument.flags.find((flag) => argv.indexOf(flag) !== -1)!;
+    return argv.find((usedFlag) => argument.flags.some((flag) => areFlagsEqual(usedFlag, flag)))!;
+}
+
+function areFlagsEqual(usedFlag: string, fullFlag: string) {
+    if (fullFlag.startsWith('--')) {
+        return fullFlag === usedFlag || fullFlag.startsWith(usedFlag);
+    }
+
+    return fullFlag === usedFlag;
+}
+
+function sortPayloads(argumentPayloads: ArgumentPayload[], argv: string[]) {
+    return sortBy(argumentPayloads, (argumentPayload) => {
+        if (isPositional(argumentPayload.argument)) {
+            return argv.indexOf(argumentPayload.payload[0]);
+        }
+
+        return argv.lastIndexOf(argumentPayload.invokedWith);
+    });
 }

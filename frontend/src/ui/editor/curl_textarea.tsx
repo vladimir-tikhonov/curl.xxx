@@ -24,6 +24,7 @@ const styles = createStyles({
     },
     ps1: {
         alignSelf: 'flex-start',
+        marginTop: 9,
         color: 'rgba(0, 0, 0, 0.54)',
     },
     helperLine: {
@@ -62,7 +63,7 @@ class CurlTextarea extends React.PureComponent<CurlTextareaProps> {
     private renderPs1() {
         return (
             <InputAdornment disableTypography position="start" classes={{ root: this.props.classes.ps1 }}>
-                > curl
+                >&nbsp;curl
             </InputAdornment>
         );
     }

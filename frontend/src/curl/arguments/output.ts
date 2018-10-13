@@ -4,7 +4,7 @@ import ArgumentName from './argument_name';
 const output: Argument = {
     isSupported: false,
     name: ArgumentName.Output,
-    flags: ['-o', '--output'],
+    flags: ['--output', '-o'],
     argsCount: 1,
 };
 
