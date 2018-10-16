@@ -1,6 +1,6 @@
 import { ArgumentParser } from 'argparse';
 import sortBy from 'lodash/sortBy';
-import stringArgv from 'string-argv';
+import parseArgvString from 'string-to-argv';
 
 import { allArguments, Argument, ArgumentName, findArgumentByName, isPositional } from './arguments';
 import { ArgumentPayload } from './curl_command';
@@ -22,7 +22,7 @@ allArguments.forEach((argument) => {
 
 export default function parse(command: string): ParseResults {
     try {
-        const argv = stringArgv(command);
+        const argv = parseArgvString(command);
         if (argv.length === 0) {
             return { successfull: false, error: 'You must specify an url' };
         }
