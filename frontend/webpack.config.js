@@ -47,6 +47,7 @@ const resolveOptions = () => ({
     resolve: {
         modules: [ROOT_PATH, 'node_modules'],
         extensions: ['.js', '.ts', '.tsx', '.scss'],
+        symlinks: false,
     },
 });
 

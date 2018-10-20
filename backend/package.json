@@ -14,24 +14,33 @@
     "build": "npm run clean:dist && tsc",
     "lint": "npm run lint:tslint && npm run lint:prettier",
     "lint:tslint": "tslint --project tsconfig.json \"**/*.ts\"",
-    "lint:prettier": "prettier --list-different \"**/*.ts\"",
+    "lint:prettier": "prettier --list-different \"**/*.{ts,yaml}\"",
     "clean:dist": "rimraf dist/*"
   },
   "_moduleAliases": {
     "src": "./dist"
   },
   "devDependencies": {
+    "@types/argparse": "^1.0.35",
     "@types/express": "^4.16.0",
-    "prettier": "^1.14.2",
+    "@types/helmet": "0.0.42",
+    "@types/lodash": "^4.14.117",
+    "@types/swagger-express-middleware": "^1.0.8",
+    "prettier": "^1.14.3",
     "rimraf": "^2.6.2",
-    "tsc-watch": "^1.0.27",
+    "tsc-watch": "^1.0.30",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "^3.0.3"
+    "typescript": "^3.1.3"
   },
   "dependencies": {
+    "argparse": "^1.0.10",
     "envalid": "^4.1.4",
-    "express": "^4.16.3",
-    "module-alias": "^2.1.0"
+    "express": "^4.16.4",
+    "helmet": "^3.14.0",
+    "lodash": "^4.17.11",
+    "module-alias": "^2.1.0",
+    "string-to-argv": "^1.0.0",
+    "swagger-express-middleware": "^1.1.1"
   }
 }

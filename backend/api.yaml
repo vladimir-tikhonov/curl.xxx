@@ -1,0 +1,50 @@
+swagger: '2.0'
+info:
+    version: 1.0.0
+    title: curl.xxx api
+
+consumes:
+    - application/json
+produces:
+    - application/json
+
+definitions:
+    CurlRequest:
+        required:
+            - command
+        properties:
+            command:
+                type: string
+    ExecutedRequest:
+        required:
+            - url
+        properties:
+            url:
+                type: string
+
+paths:
+    /curl:
+        options:
+            description: 'CORS Headers'
+            responses:
+                default:
+                    headers:
+                        Access-Control-Allow-Origin:
+                            type: string
+                            default: https://curl.xxx
+        post:
+            description: 'Execute curl command'
+            operationId: executeCommand
+            parameters:
+                - in: 'body'
+                  name: 'request'
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CurlRequest'
+            responses:
+                200:
+                    description: 'Executed command data'
+                    schema:
+                        $ref: '#/definitions/ExecutedRequest'
+                400:
+                    description: 'Invalid request'
