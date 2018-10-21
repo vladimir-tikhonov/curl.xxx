@@ -13,9 +13,18 @@ export function buildArgumentsRemover(argumentsList: Argument[]): ApplierFunctio
 
 export function buildArgumentInserter<T extends string>(argument: Argument<T>, payload?: T[]) {
     return (curlCommand: CurlCommand, args: T[] = []) => {
+        const payloadToUse = payload || args;
+        if (payloadToUse.length !== argument.argsCount) {
+            throw new Error(
+                `Trying to apply ${payloadToUse.length} arguments to ${argument.name} which takes ${
+                    argument.argsCount
+                } arguments.`,
+            );
+        }
+
         const matchedArgumentIndex = curlCommand.findIndex((argumentPayload) => argumentPayload.argument === argument);
         if (matchedArgumentIndex === -1) {
-            return [...curlCommand, { argument, invokedWith: argument.flags[0], payload: payload || args }];
+            return [...curlCommand, { argument, invokedWith: argument.flags[0], payload: payloadToUse }];
         }
 
         return curlCommand.map((argumentPayload) => {
@@ -23,13 +32,21 @@ export function buildArgumentInserter<T extends string>(argument: Argument<T>, p
                 return argumentPayload;
             }
 
-            return { ...argumentPayload, payload: args! };
+            return { ...argumentPayload, payload: payloadToUse };
         });
     };
 }
 
 export function buildArgumentTransformer<T extends string>(argument: Argument<T>, payload: T[]): ApplierFunction {
     return (curlCommand: CurlCommand) => {
+        if (payload.length !== argument.argsCount) {
+            throw new Error(
+                `Trying to apply ${payload.length} arguments to ${argument.name} which takes ${
+                    argument.argsCount
+                } arguments.`,
+            );
+        }
+
         return curlCommand.map((argumentPayload) => {
             if (argumentPayload.argument !== argument) {
                 return argumentPayload;
@@ -87,6 +104,12 @@ export function combineApplierCheckers<T extends string>(
             .filter((result) => result.isApplied);
 
         return maxBy(filteredResults, 'priority') || { isApplied: false };
+    };
+}
+
+export function bindPayloadToApplierFunction(applierFunction: ApplierFunction, payload: any[]): ApplierFunction {
+    return (curlCommand: CurlCommand) => {
+        return applierFunction(curlCommand, payload);
     };
 }
 

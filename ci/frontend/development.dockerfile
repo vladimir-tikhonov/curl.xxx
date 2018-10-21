@@ -4,4 +4,4 @@ VOLUME ["/opt/app/frontend", "/opt/app/frontend/node_modules", "/opt/app/shared"
 
 WORKDIR /opt/app/frontend
 
-CMD npm i && npm start
+CMD npm i --no-package-lock && npm start

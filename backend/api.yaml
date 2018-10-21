@@ -17,10 +17,24 @@ definitions:
                 type: string
     ExecutedRequest:
         required:
-            - url
+            - command
+            - headers
+            - body
+            - statusCode
+            - ip
         properties:
-            url:
+            command:
                 type: string
+            headers:
+                type: array
+                items:
+                    type: string
+            body:
+                type: string
+            statusCode:
+                type: node
+            ip:
+                type: node
 
 paths:
     /curl:
