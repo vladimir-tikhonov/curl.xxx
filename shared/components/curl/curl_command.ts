@@ -1,3 +1,4 @@
+import partition from 'lodash/partition';
 import uniq from 'lodash/uniq';
 
 import { Argument, isPositional } from './arguments';
@@ -16,16 +17,23 @@ export type BuildResults =
 
 const SANITIZE_REGEX = /^(\s*\$\s*)?(\s*curl\s*)?(.*)/;
 
-export function buildCommandFromString(command: string): BuildResults {
+export function buildCommandFromString(
+    command: string,
+    customOptions?: Partial<{ ignoreUnsupportedArguments: boolean }>,
+): BuildResults {
+    const options = { ignoreUnsupportedArguments: false, ...customOptions };
     const parseResults = parse(command);
     if (!parseResults.successfull) {
         return { successfull: false, error: parseResults.error };
     }
 
-    const unsupportedArguments = parseResults.payloads.filter((payload) => !payload.argument.isSupported);
+    const [supportedArguments, unsupportedArguments] = partition(
+        parseResults.payloads,
+        (payload) => payload.argument.isSupported,
+    );
     return {
         successfull: true,
-        curlCommand: parseResults.payloads,
+        curlCommand: options.ignoreUnsupportedArguments ? supportedArguments : parseResults.payloads,
         warnings: [
             ...buildUnknownArgumentsWarnings(parseResults),
             ...buildUnsupportedAgrumentsWarnings(unsupportedArguments),
@@ -37,8 +45,8 @@ export function strinfigyCurlCommand(curlCommand: CurlCommand) {
     return curlCommand
         .map((argumentPayload) => {
             return isPositional(argumentPayload.argument)
-                ? argumentPayload.payload.join(' ')
-                : `${argumentPayload.invokedWith} ${argumentPayload.payload.join(' ')}`;
+                ? stringifyPayload(argumentPayload.payload)
+                : `${argumentPayload.invokedWith} ${stringifyPayload(argumentPayload.payload)}`;
         })
         .join(' ');
 }
@@ -46,6 +54,15 @@ export function strinfigyCurlCommand(curlCommand: CurlCommand) {
 export function sanitizeCommand(command: string) {
     const matches = command.match(SANITIZE_REGEX)!;
     return matches[matches.length - 1];
+}
+
+function stringifyPayload(payload: string[]) {
+    return payload
+        .map((str) => {
+            const needToEscape = str.includes(' ') || str.includes('"');
+            return needToEscape ? `"${str}"` : str;
+        })
+        .join(' ');
 }
 
 function buildUnsupportedAgrumentsWarnings(unsupportedArguments: ArgumentPayload[]) {
